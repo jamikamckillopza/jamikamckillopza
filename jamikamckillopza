@@ -1,0 +1,14 @@
+      status = self.check_status_tx(hash)
+                self.sleep_indicator(10)
+                if status == 1:
+                    logger.success(f'{self.address}:{self.chain} - successfully bridged to {self.to} : {self.scan}{self.w3.to_hex(hash)}...')
+                    self.sleep_indicator(random.randint(self.delay[0],self.delay[1]))
+                    return self.address, 'success'
+            except Exception as e:
+                error = str(e)
+                if 'nonce too low' in error or 'already known' in error:
+                    logger.success(f'{self.address}:{self.chain} - successfully bridged to {self.to}...')
+                    self.sleep_indicator(random.randint(self.delay[0],self.delay[1]))
+                    return self.address, 'success'
+                logger.error(f'{self.address}:{self.chain} - error {e}')
+                return self.address, 'error'
